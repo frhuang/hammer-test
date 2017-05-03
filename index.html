@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>2017年深圳各区学位预警(截至时间5月2日17:00)</title>
+<style type="text/css">
+    .rich_media_content * {
+            max-width: 100%!important;
+        box-sizing: border-box!important;
+        -webkit-box-sizing: border-box!important;
+        word-wrap: break-word!important;
+    }
+    #img-mask {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .8);
+    }
+    #img-src {
+        position: absolute;
+        left: 0%;
+        top: 50%;
+        width: 100%;
+        display: block;
+        margin-top: -50%;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50%;
+    }
+</style>
+</head>
+<body>
+    <div class="rich_media_content">
+        <img src="./0.jpg">
+         <img src="./prcode.png">
+          <img src="./0.jpg">
+    </div>
+    <div id="img-mask">
+        <img id="img-src">
+    </div>
+    <script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./hammer.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var stage = document.getElementById('img-src');
+
+        // create a manager for that element
+        var mc = new Hammer.Manager(stage);
+
+        // create a recognizer
+        var pinch = new Hammer.Pinch();
+        var pan = new Hammer.Pan();
+
+        // add the recognizer
+        mc.add([pinch, pan]);
+        // subscribe to events
+        mc.on('pinch', function(e) {
+            // do something cool
+            var s = e.scale < 0.8 ? 0.8 : e.scale;
+            stage.style.transform = 'scale('+s+')';
+        });
+        new Hammer( $( "#img-src" )[ 0 ], {
+          domEvents: true
+        } );
+        var margin;
+        $("#img-src").on("panstart", function(ev) {
+            var img = $( "#img-src" );
+            margin = parseInt( img.css( "margin-left" ), 10 );
+        });
+        $("#img-src").on( "pan", function( e ) {
+            var delta = margin + e.originalEvent.gesture.deltaX;
+            $( "#img-src" ).css( {
+            "margin-left": margin + e.originalEvent.gesture.deltaX})
+        })
+
+        $('img').on('click', function() {
+            $('#img-src').css("transform", "scale(1)");
+            $('#img-src').css("margin-left", "0");
+            $('#img-mask').show();
+            $('#img-src').attr("src", $(this).attr('src'));
+        })
+        $('#img-src').on('touchmove', function (e) {
+
+        })
+        $('#img-mask').on('click', function() {
+            $('#img-mask').hide();
+        }) 
+    })
+        
+
+    </script>
+</body>
+</html>
